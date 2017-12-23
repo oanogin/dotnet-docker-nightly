@@ -1,6 +1,6 @@
 FROM microsoft/dotnet-nightly:2.1-runtime-deps-alpine
 
-# Install .NET Core SDK
+# Install .NET Core SDK and dependencies
 RUN apk add --no-cache --virtual .build-deps \
     openssl \
     && wget -O dotnet.tar.gz https://dotnetcli.blob.core.windows.net/dotnet/Sdk/master/dotnet-sdk-latest-alpine.3.6-x64.tar.gz \
@@ -18,3 +18,9 @@ RUN mkdir warmup \
     && cd .. \
     && rm -rf warmup \
     && rm -rf /tmp/NuGetScratch
+
+RUN apk add --no-cache icu-libs
+
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT false
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
